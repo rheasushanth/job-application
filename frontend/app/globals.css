@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background-color: #0a0b0e;
+  color: #dfe3e9;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings get the display face and tighter tracking. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Tabular figures are for columns that must align vertically — table rows and
+   axis ticks. They are wrong for large standalone numbers, where giving every
+   digit a `0`'s width makes a value like 121 look loose. */
+.num,
+table,
+input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Display numbers: the body sans with proportional figures. A display or
+   serif face at hero sizes reads as off-brand decoration. */
+.figure {
+  font-family: var(--font-sans), sans-serif;
+  font-variant-numeric: proportional-nums;
+  letter-spacing: -0.03em;
+}
+
+:focus-visible {
+  outline: 2px solid #4a86ef;
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: rgba(74, 134, 239, 0.3);
+  color: #f5f7fa;
+}
+
+/* Range inputs: the accent is the obvious affordance here. */
+input[type="range"] {
+  accent-color: #4a86ef;
+}
+input[type="checkbox"] {
+  accent-color: #4a86ef;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #343b46 transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #272d36;
+  border-radius: 6px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #4a5260;
+}
+
+@layer components {
+  .label {
+    @apply text-2xs font-semibold uppercase tracking-[0.1em] text-ink-400;
+  }
+
+  .surface {
+    @apply rounded border border-ink-700 bg-ink-900 shadow-edge;
+  }
+
+  .surface-raised {
+    @apply rounded border border-ink-700 bg-ink-850 shadow-edge;
+  }
+
+  .divider {
+    @apply border-t border-ink-700;
+  }
+
+  .field {
+    @apply w-full rounded border border-ink-700 bg-ink-850 px-3 py-2 text-sm
+           text-ink-50 transition-colors placeholder:text-ink-400
+           hover:border-ink-600 focus:border-accent-500 focus:outline-none
+           focus:ring-0 focus:shadow-focus;
+  }
+
+  select.field {
+    @apply cursor-pointer;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded
+           border px-4 py-2 text-sm font-medium transition-all
+           disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  /* Primary is the accent, so the main action on a page is unmistakable. */
+  .btn-primary {
+    @apply btn border-accent-600 bg-accent-600 text-white
+           hover:border-accent-500 hover:bg-accent-500;
+  }
+
+  .btn-secondary {
+    @apply btn border-ink-600 bg-ink-850 text-ink-100
+           hover:border-ink-500 hover:bg-ink-800 hover:text-ink-50;
+  }
+
+  .btn-ghost {
+    @apply btn border-transparent bg-transparent text-ink-300
+           hover:bg-ink-850 hover:text-ink-50;
+  }
+
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-sm border border-ink-700
+           bg-ink-850 px-2 py-0.5 text-2xs text-ink-200;
+  }
+
+  .chip-accent {
+    @apply chip border-accent-line bg-accent-soft text-accent-300;
+  }
+
+  .link {
+    @apply text-accent-300 underline decoration-accent-line underline-offset-[3px]
+           transition-colors hover:text-accent-200 hover:decoration-accent-400;
+  }
+
+  .num {
+    @apply font-mono tabular-nums;
+  }
+
+  /* Table header row, used in several places. */
+  .th {
+    @apply px-4 py-2.5 text-left text-2xs font-semibold uppercase
+           tracking-[0.08em] text-ink-400;
+  }
+}
+
+/* A single soft pool of light behind hero content, so a large dark area has
+   depth without resorting to a gradient background. */
+.glow {
+  position: relative;
+  isolation: isolate;
+}
+.glow::before {
+  content: "";
+  position: absolute;
+  inset: -20% 10% auto;
+  height: 420px;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 60% 100% at 50% 0%,
+    rgba(74, 134, 239, 0.1),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Hairline grid, used behind the landing hero only. Very low contrast so it
+   reads as texture rather than as chart gridlines. */
+.grid-texture {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #14171c;
+  border-radius: 4px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(255, 255, 255, 0.07) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
